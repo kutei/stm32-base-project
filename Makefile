@@ -36,10 +36,10 @@ BUILD_DIR = build
 ######################################
 # C sources
 C_SOURCES =  \
-Core/Src/gpio.c \
 Core/Src/sys.c \
 Core/Src/stm32f1xx_it.c \
 Core/Src/stm32f1xx_hal_msp.c \
+Core/Src/system_stm32f1xx.c  \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c \
@@ -52,8 +52,7 @@ Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c \
-Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_exti.c \
-Core/Src/system_stm32f1xx.c  
+Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_exti.c 
 
 # CXX sources
 CXX_SOURCES =  \
