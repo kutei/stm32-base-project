@@ -1,0 +1,4 @@
+build
+.mxproject
+*.ioc
+.vscode/.*
