@@ -5,18 +5,24 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Cortex Debug",
+            "name": "ST-LINK Debug",
             "cwd": "${workspaceRoot}",
-            "executable": "./build/prjoutput.elf",
-            "device": "STM32F103",
+            "executable": "${workspaceFolder}/build/prjoutput.elf",
+            "cpu": "cortex-m3",
+            "device": "STM32F103C8",
             "request": "launch",
             "type": "cortex-debug",
             "servertype": "openocd",
+            "serverpath": "/usr/local/bin/openocd",
+            // "preLaunchTask": "Build project",
+            // "showDevDebugOutput": true,
+            "searchDir": [
+                "/usr/local/share/openocd/scripts",
+            ],
             "configFiles": [
                 "interface/stlink-v2.cfg",
                 "target/stm32f1x.cfg"
             ],
-            "preLaunchTask": "Build project"
         }
     ]
 }

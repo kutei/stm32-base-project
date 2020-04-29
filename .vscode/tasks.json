@@ -9,7 +9,7 @@
             "command": "make",
             "args": [
                 "DEBUG=1",
-                "-j3",
+                "-j",
                 "all"
             ],
             "problemMatcher": [
