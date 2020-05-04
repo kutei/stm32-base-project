@@ -5,12 +5,12 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  arm-build:
     runs-on: ubuntu-latest
     steps:
+      - name: arm-none-eabi-gcc build
+      - uses: fiam/arm-none-eabi-gcc@v1
+        with:
+          release: '9-2019-q4'
       - uses: actions/checkout@master
-      - name: prepare
-        run: |
-          apt install arm-none-eabi-gcc
-      - name: make build
-        run: make
+      - run: make
