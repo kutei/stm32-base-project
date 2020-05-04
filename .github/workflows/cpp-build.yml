@@ -14,5 +14,5 @@ jobs:
           release: '9-2019-q4'
       - name: checkout branch
         uses: actions/checkout@master
-      - name:
+      - name: build
         run: make
