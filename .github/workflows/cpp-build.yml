@@ -8,9 +8,11 @@ jobs:
   arm-build:
     runs-on: ubuntu-latest
     steps:
-      - name: arm-none-eabi-gcc build
-      - uses: fiam/arm-none-eabi-gcc@v1
+      - name: setup arm-none-eabi-gcc
+        uses: fiam/arm-none-eabi-gcc@v1
         with:
           release: '9-2019-q4'
-      - uses: actions/checkout@master
-      - run: make
+      - name: checkout branch
+        uses: actions/checkout@master
+      - name:
+        run: make
