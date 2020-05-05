@@ -14,6 +14,7 @@
   *
   *****************************************************************************/
 #include "main.hpp"
+#include <memory.h>
 
 static void SystemClock_Config(void);
 
@@ -42,7 +43,7 @@ int main(void)
   while (1)
   {
     GPIOC->ODR ^= 1 << 13;
-    HAL_Delay(500);    
+    HAL_Delay(1000);
   }
 }
 
@@ -52,10 +53,12 @@ int main(void)
   */
 void SystemClock_Config(void)
 {
-  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_OscInitTypeDef RCC_OscInitStruct;
+  RCC_ClkInitTypeDef RCC_ClkInitStruct;
+  memset((void*)&RCC_OscInitStruct, 0, sizeof(RCC_OscInitTypeDef));
+  memset((void*)&RCC_ClkInitStruct, 0, sizeof(RCC_ClkInitTypeDef));
 
-  /** Initializes the CPU, AHB and APB busses clocks 
+  /** Initializes the CPU, AHB and APB busses clocks
   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
@@ -68,7 +71,7 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  /** Initializes the CPU, AHB and APB busses clocks 
+  /** Initializes the CPU, AHB and APB busses clocks
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
@@ -102,7 +105,7 @@ void Error_Handler(void)
   * @retval None
   */
 void assert_failed(uint8_t *file, uint32_t line)
-{ 
+{
   /* You can add his own implementation to report the file name and line number,
      tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 }
