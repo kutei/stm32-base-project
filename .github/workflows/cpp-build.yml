@@ -14,5 +14,9 @@ jobs:
           release: '9-2019-q4'
       - name: checkout branch
         uses: actions/checkout@master
-      - name: build
-        run: make
+      - name: cmake build
+        run: |
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_TOOLCHAIN_FILE=../cmake/arm-none-eabi-gcc_toolchain.cmake
+          make

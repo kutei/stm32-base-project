@@ -14,6 +14,7 @@
   *
   *****************************************************************************/
 #include "main.hpp"
+#include <memory.h>
 
 static void SystemClock_Config(void);
 
@@ -52,8 +53,10 @@ int main(void)
   */
 void SystemClock_Config(void)
 {
-  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_OscInitTypeDef RCC_OscInitStruct;
+  RCC_ClkInitTypeDef RCC_ClkInitStruct;
+  memset((void*)&RCC_OscInitStruct, 0, sizeof(RCC_OscInitTypeDef));
+  memset((void*)&RCC_ClkInitStruct, 0, sizeof(RCC_ClkInitTypeDef));
 
   /** Initializes the CPU, AHB and APB busses clocks 
   */
