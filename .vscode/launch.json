@@ -7,7 +7,7 @@
         {
             "name": "ST-LINK Debug",
             "cwd": "${workspaceRoot}",
-            "executable": "${workspaceFolder}/build/prjoutput.elf",
+            "executable": "${workspaceFolder}/install/bin/prjoutput.elf",
             "cpu": "cortex-m3",
             "device": "STM32F103C8",
             "request": "launch",
