@@ -48,3 +48,9 @@ set(CMAKE_EXE_LINKER_FLAGS
     -lc -lm --specs=nosys.specs -Xlinker --gc-sections -Wl,-Map=${CMAKE_PROJECT_NAME}.map"
     CACHE STRING "" FORCE
 )
+
+function(display_size APP_NAME)
+    add_custom_command(TARGET ${APP_NAME} POST_BUILD
+        COMMAND arm-none-eabi-size --format=berkeley "${APP_NAME}"
+    )
+endfunction()
