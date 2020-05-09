@@ -16,7 +16,4 @@ jobs:
         uses: actions/checkout@master
       - name: cmake build
         run: |
-          mkdir build
-          cd build
-          cmake .. -DCMAKE_TOOLCHAIN_FILE=../cmake/arm-none-eabi-gcc_toolchain.cmake
-          make
+          ./build.sh
