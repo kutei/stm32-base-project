@@ -20,7 +20,8 @@ BinPackParameters: true
 BreakBeforeBinaryOperators: 'NonAssignment'
 BreakBeforeBraces: 'Allman'
 BreakConstructorInitializersBeforeComma: false
-ColumnLimit: 80
+BraceWrapping: {AfterExternBlock: false}
+ColumnLimit: 150
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
 Cpp11BracedListStyle: true
 DerivePointerBinding: true
