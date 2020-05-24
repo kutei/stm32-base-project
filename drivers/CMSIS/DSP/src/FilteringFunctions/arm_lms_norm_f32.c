@@ -38,7 +38,8 @@
  * This set of functions implements a commonly used adaptive filter.
  * It is related to the Least Mean Square (LMS) adaptive filter and includes an additional normalization
  * factor which increases the adaptation rate of the filter.
- * The CMSIS DSP Library contains normalized LMS filter functions that operate on Q15, Q31, and floating-point data types.
+ * The CMSIS DSP Library contains normalized LMS filter functions that operate on Q15, Q31, and floating-point data
+ *types.
  *
  * A normalized least mean square (NLMS) filter consists of two components as shown below.
  * The first component is a standard transversal or FIR filter.
@@ -46,10 +47,10 @@
  * The NLMS filter has two input signals.
  * The "input" feeds the FIR filter while the "reference input" corresponds to the desired output of the FIR filter.
  * That is, the FIR filter coefficients are updated so that the output of the FIR filter matches the reference input.
- * The filter coefficient update mechanism is based on the difference between the FIR filter output and the reference input.
- * This "error signal" tends towards zero as the filter adapts.
- * The NLMS processing functions accept the input and reference input signals and generate the filter output and error signal.
- * \image html LMS.gif "Internal structure of the NLMS adaptive filter"
+ * The filter coefficient update mechanism is based on the difference between the FIR filter output and the reference
+ *input. This "error signal" tends towards zero as the filter adapts. The NLMS processing functions accept the input and
+ *reference input signals and generate the filter output and error signal. \image html LMS.gif "Internal structure of
+ *the NLMS adaptive filter"
  *
  * The functions operate on blocks of data and each call to the function processes
  * <code>blockSize</code> samples through the filter.
@@ -98,15 +99,13 @@
  *    {x[n-numTaps+1], x[n-numTaps], x[n-numTaps-1], x[n-numTaps-2]....x[0], x[1], ..., x[blockSize-1]}
  * </pre>
  * \par
- * Note that the length of the state buffer exceeds the length of the coefficient array by <code>blockSize-1</code> samples.
- * The increased state buffer length allows circular addressing, which is traditionally used in FIR filters,
- * to be avoided and yields a significant speed improvement.
- * The state variables are updated after each block of data is processed.
- * \par Instance Structure
- * The coefficients and state variables for a filter are stored together in an instance data structure.
- * A separate instance structure must be defined for each filter and
- * coefficient and state arrays cannot be shared among instances.
- * There are separate instance structure declarations for each of the 3 supported data types.
+ * Note that the length of the state buffer exceeds the length of the coefficient array by <code>blockSize-1</code>
+ *samples. The increased state buffer length allows circular addressing, which is traditionally used in FIR filters, to
+ *be avoided and yields a significant speed improvement. The state variables are updated after each block of data is
+ *processed. \par Instance Structure The coefficients and state variables for a filter are stored together in an
+ *instance data structure. A separate instance structure must be defined for each filter and coefficient and state
+ *arrays cannot be shared among instances. There are separate instance structure declarations for each of the 3
+ *supported data types.
  *
  * \par Initialization Functions
  * There is also an associated initialization function for each data type.
@@ -119,10 +118,9 @@
  * recipTable, postShift
  *
  * \par
- * Instance structure cannot be placed into a const data section and it is recommended to use the initialization function.
- * \par Fixed-Point Behavior:
- * Care must be taken when using the Q15 and Q31 versions of the normalised LMS filter.
- * The following issues must be considered:
+ * Instance structure cannot be placed into a const data section and it is recommended to use the initialization
+ *function. \par Fixed-Point Behavior: Care must be taken when using the Q15 and Q31 versions of the normalised LMS
+ *filter. The following issues must be considered:
  * - Scaling of coefficients
  * - Overflow and saturation
  *
@@ -140,315 +138,293 @@
  * described separately as part of the function specific documentation below.
  */
 
-
 /**
  * @addtogroup LMS_NORM
  * @{
  */
 
+/**
+ * @brief Processing function for floating-point normalized LMS filter.
+ * @param[in] *S points to an instance of the floating-point normalized LMS filter structure.
+ * @param[in] *pSrc points to the block of input data.
+ * @param[in] *pRef points to the block of reference data.
+ * @param[out] *pOut points to the block of output data.
+ * @param[out] *pErr points to the block of error data.
+ * @param[in] blockSize number of samples to process.
+ * @return none.
+ */
 
-  /**
-   * @brief Processing function for floating-point normalized LMS filter.
-   * @param[in] *S points to an instance of the floating-point normalized LMS filter structure.
-   * @param[in] *pSrc points to the block of input data.
-   * @param[in] *pRef points to the block of reference data.
-   * @param[out] *pOut points to the block of output data.
-   * @param[out] *pErr points to the block of error data.
-   * @param[in] blockSize number of samples to process.
-   * @return none.
-   */
-
-void arm_lms_norm_f32(
-  arm_lms_norm_instance_f32 * S,
-  float32_t * pSrc,
-  float32_t * pRef,
-  float32_t * pOut,
-  float32_t * pErr,
-  uint32_t blockSize)
+void arm_lms_norm_f32(arm_lms_norm_instance_f32 *S, float32_t *pSrc, float32_t *pRef, float32_t *pOut, float32_t *pErr, uint32_t blockSize)
 {
-  float32_t *pState = S->pState;                 /* State pointer */
-  float32_t *pCoeffs = S->pCoeffs;               /* Coefficient pointer */
-  float32_t *pStateCurnt;                        /* Points to the current sample of the state */
-  float32_t *px, *pb;                            /* Temporary pointers for state and coefficient buffers */
-  float32_t mu = S->mu;                          /* Adaptive factor */
-  uint32_t numTaps = S->numTaps;                 /* Number of filter coefficients in the filter */
-  uint32_t tapCnt, blkCnt;                       /* Loop counters */
-  float32_t energy;                              /* Energy of the input */
-  float32_t sum, e, d;                           /* accumulator, error, reference data sample */
-  float32_t w, x0, in;                           /* weight factor, temporary variable to hold input sample and state */
+    float32_t *pState  = S->pState;  /* State pointer */
+    float32_t *pCoeffs = S->pCoeffs; /* Coefficient pointer */
+    float32_t *pStateCurnt;          /* Points to the current sample of the state */
+    float32_t *px, *pb;              /* Temporary pointers for state and coefficient buffers */
+    float32_t  mu      = S->mu;      /* Adaptive factor */
+    uint32_t   numTaps = S->numTaps; /* Number of filter coefficients in the filter */
+    uint32_t   tapCnt, blkCnt;       /* Loop counters */
+    float32_t  energy;               /* Energy of the input */
+    float32_t  sum, e, d;            /* accumulator, error, reference data sample */
+    float32_t  w, x0, in;            /* weight factor, temporary variable to hold input sample and state */
 
-  /* Initializations of error,  difference, Coefficient update */
-  e = 0.0f;
-  d = 0.0f;
-  w = 0.0f;
+    /* Initializations of error,  difference, Coefficient update */
+    e = 0.0f;
+    d = 0.0f;
+    w = 0.0f;
 
-  energy = S->energy;
-  x0 = S->x0;
+    energy = S->energy;
+    x0     = S->x0;
 
-  /* S->pState points to buffer which contains previous frame (numTaps - 1) samples */
-  /* pStateCurnt points to the location where the new input data should be written */
-  pStateCurnt = &(S->pState[(numTaps - 1U)]);
+    /* S->pState points to buffer which contains previous frame (numTaps - 1) samples */
+    /* pStateCurnt points to the location where the new input data should be written */
+    pStateCurnt = &(S->pState[(numTaps - 1U)]);
 
-  /* Loop over blockSize number of values */
-  blkCnt = blockSize;
+    /* Loop over blockSize number of values */
+    blkCnt = blockSize;
 
+#if defined(ARM_MATH_DSP)
 
-#if defined (ARM_MATH_DSP)
+    /* Run the below code for Cortex-M4 and Cortex-M3 */
 
-  /* Run the below code for Cortex-M4 and Cortex-M3 */
+    while (blkCnt > 0U) {
+        /* Copy the new input sample into the state buffer */
+        *pStateCurnt++ = *pSrc;
 
-  while (blkCnt > 0U)
-  {
-    /* Copy the new input sample into the state buffer */
-    *pStateCurnt++ = *pSrc;
+        /* Initialize pState pointer */
+        px = pState;
 
-    /* Initialize pState pointer */
-    px = pState;
+        /* Initialize coeff pointer */
+        pb = (pCoeffs);
 
-    /* Initialize coeff pointer */
-    pb = (pCoeffs);
+        /* Read the sample from input buffer */
+        in = *pSrc++;
 
-    /* Read the sample from input buffer */
-    in = *pSrc++;
+        /* Update the energy calculation */
+        energy -= x0 * x0;
+        energy += in * in;
 
-    /* Update the energy calculation */
-    energy -= x0 * x0;
-    energy += in * in;
+        /* Set the accumulator to zero */
+        sum = 0.0f;
 
-    /* Set the accumulator to zero */
-    sum = 0.0f;
+        /* Loop unrolling.  Process 4 taps at a time. */
+        tapCnt = numTaps >> 2;
 
-    /* Loop unrolling.  Process 4 taps at a time. */
-    tapCnt = numTaps >> 2;
+        while (tapCnt > 0U) {
+            /* Perform the multiply-accumulate */
+            sum += (*px++) * (*pb++);
+            sum += (*px++) * (*pb++);
+            sum += (*px++) * (*pb++);
+            sum += (*px++) * (*pb++);
 
-    while (tapCnt > 0U)
-    {
-      /* Perform the multiply-accumulate */
-      sum += (*px++) * (*pb++);
-      sum += (*px++) * (*pb++);
-      sum += (*px++) * (*pb++);
-      sum += (*px++) * (*pb++);
+            /* Decrement the loop counter */
+            tapCnt--;
+        }
 
-      /* Decrement the loop counter */
-      tapCnt--;
+        /* If the filter length is not a multiple of 4, compute the remaining filter taps */
+        tapCnt = numTaps % 0x4U;
+
+        while (tapCnt > 0U) {
+            /* Perform the multiply-accumulate */
+            sum += (*px++) * (*pb++);
+
+            /* Decrement the loop counter */
+            tapCnt--;
+        }
+
+        /* The result in the accumulator, store in the destination buffer. */
+        *pOut++ = sum;
+
+        /* Compute and store error */
+        d       = (float32_t)(*pRef++);
+        e       = d - sum;
+        *pErr++ = e;
+
+        /* Calculation of Weighting factor for updating filter coefficients */
+        /* epsilon value 0.000000119209289f */
+        w = (e * mu) / (energy + 0.000000119209289f);
+
+        /* Initialize pState pointer */
+        px = pState;
+
+        /* Initialize coeff pointer */
+        pb = (pCoeffs);
+
+        /* Loop unrolling.  Process 4 taps at a time. */
+        tapCnt = numTaps >> 2;
+
+        /* Update filter coefficients */
+        while (tapCnt > 0U) {
+            /* Perform the multiply-accumulate */
+            *pb += w * (*px++);
+            pb++;
+
+            *pb += w * (*px++);
+            pb++;
+
+            *pb += w * (*px++);
+            pb++;
+
+            *pb += w * (*px++);
+            pb++;
+
+            /* Decrement the loop counter */
+            tapCnt--;
+        }
+
+        /* If the filter length is not a multiple of 4, compute the remaining filter taps */
+        tapCnt = numTaps % 0x4U;
+
+        while (tapCnt > 0U) {
+            /* Perform the multiply-accumulate */
+            *pb += w * (*px++);
+            pb++;
+
+            /* Decrement the loop counter */
+            tapCnt--;
+        }
+
+        x0 = *pState;
+
+        /* Advance state pointer by 1 for the next sample */
+        pState = pState + 1;
+
+        /* Decrement the loop counter */
+        blkCnt--;
     }
 
-    /* If the filter length is not a multiple of 4, compute the remaining filter taps */
-    tapCnt = numTaps % 0x4U;
+    S->energy = energy;
+    S->x0     = x0;
 
-    while (tapCnt > 0U)
-    {
-      /* Perform the multiply-accumulate */
-      sum += (*px++) * (*pb++);
+    /* Processing is complete. Now copy the last numTaps - 1 samples to the
+       satrt of the state buffer. This prepares the state buffer for the
+       next function call. */
 
-      /* Decrement the loop counter */
-      tapCnt--;
+    /* Points to the start of the pState buffer */
+    pStateCurnt = S->pState;
+
+    /* Loop unrolling for (numTaps - 1U)/4 samples copy */
+    tapCnt = (numTaps - 1U) >> 2U;
+
+    /* copy data */
+    while (tapCnt > 0U) {
+        *pStateCurnt++ = *pState++;
+        *pStateCurnt++ = *pState++;
+        *pStateCurnt++ = *pState++;
+        *pStateCurnt++ = *pState++;
+
+        /* Decrement the loop counter */
+        tapCnt--;
     }
 
-    /* The result in the accumulator, store in the destination buffer. */
-    *pOut++ = sum;
+    /* Calculate remaining number of copies */
+    tapCnt = (numTaps - 1U) % 0x4U;
 
-    /* Compute and store error */
-    d = (float32_t) (*pRef++);
-    e = d - sum;
-    *pErr++ = e;
+    /* Copy the remaining q31_t data */
+    while (tapCnt > 0U) {
+        *pStateCurnt++ = *pState++;
 
-    /* Calculation of Weighting factor for updating filter coefficients */
-    /* epsilon value 0.000000119209289f */
-    w = (e * mu) / (energy + 0.000000119209289f);
-
-    /* Initialize pState pointer */
-    px = pState;
-
-    /* Initialize coeff pointer */
-    pb = (pCoeffs);
-
-    /* Loop unrolling.  Process 4 taps at a time. */
-    tapCnt = numTaps >> 2;
-
-    /* Update filter coefficients */
-    while (tapCnt > 0U)
-    {
-      /* Perform the multiply-accumulate */
-      *pb += w * (*px++);
-      pb++;
-
-      *pb += w * (*px++);
-      pb++;
-
-      *pb += w * (*px++);
-      pb++;
-
-      *pb += w * (*px++);
-      pb++;
-
-
-      /* Decrement the loop counter */
-      tapCnt--;
+        /* Decrement the loop counter */
+        tapCnt--;
     }
-
-    /* If the filter length is not a multiple of 4, compute the remaining filter taps */
-    tapCnt = numTaps % 0x4U;
-
-    while (tapCnt > 0U)
-    {
-      /* Perform the multiply-accumulate */
-      *pb += w * (*px++);
-      pb++;
-
-      /* Decrement the loop counter */
-      tapCnt--;
-    }
-
-    x0 = *pState;
-
-    /* Advance state pointer by 1 for the next sample */
-    pState = pState + 1;
-
-    /* Decrement the loop counter */
-    blkCnt--;
-  }
-
-  S->energy = energy;
-  S->x0 = x0;
-
-  /* Processing is complete. Now copy the last numTaps - 1 samples to the
-     satrt of the state buffer. This prepares the state buffer for the
-     next function call. */
-
-  /* Points to the start of the pState buffer */
-  pStateCurnt = S->pState;
-
-  /* Loop unrolling for (numTaps - 1U)/4 samples copy */
-  tapCnt = (numTaps - 1U) >> 2U;
-
-  /* copy data */
-  while (tapCnt > 0U)
-  {
-    *pStateCurnt++ = *pState++;
-    *pStateCurnt++ = *pState++;
-    *pStateCurnt++ = *pState++;
-    *pStateCurnt++ = *pState++;
-
-    /* Decrement the loop counter */
-    tapCnt--;
-  }
-
-  /* Calculate remaining number of copies */
-  tapCnt = (numTaps - 1U) % 0x4U;
-
-  /* Copy the remaining q31_t data */
-  while (tapCnt > 0U)
-  {
-    *pStateCurnt++ = *pState++;
-
-    /* Decrement the loop counter */
-    tapCnt--;
-  }
 
 #else
 
-  /* Run the below code for Cortex-M0 */
+    /* Run the below code for Cortex-M0 */
 
-  while (blkCnt > 0U)
-  {
-    /* Copy the new input sample into the state buffer */
-    *pStateCurnt++ = *pSrc;
+    while (blkCnt > 0U) {
+        /* Copy the new input sample into the state buffer */
+        *pStateCurnt++ = *pSrc;
 
-    /* Initialize pState pointer */
-    px = pState;
+        /* Initialize pState pointer */
+        px = pState;
 
-    /* Initialize pCoeffs pointer */
-    pb = pCoeffs;
+        /* Initialize pCoeffs pointer */
+        pb = pCoeffs;
 
-    /* Read the sample from input buffer */
-    in = *pSrc++;
+        /* Read the sample from input buffer */
+        in = *pSrc++;
 
-    /* Update the energy calculation */
-    energy -= x0 * x0;
-    energy += in * in;
+        /* Update the energy calculation */
+        energy -= x0 * x0;
+        energy += in * in;
 
-    /* Set the accumulator to zero */
-    sum = 0.0f;
+        /* Set the accumulator to zero */
+        sum = 0.0f;
 
-    /* Loop over numTaps number of values */
-    tapCnt = numTaps;
+        /* Loop over numTaps number of values */
+        tapCnt = numTaps;
 
-    while (tapCnt > 0U)
-    {
-      /* Perform the multiply-accumulate */
-      sum += (*px++) * (*pb++);
+        while (tapCnt > 0U) {
+            /* Perform the multiply-accumulate */
+            sum += (*px++) * (*pb++);
 
-      /* Decrement the loop counter */
-      tapCnt--;
+            /* Decrement the loop counter */
+            tapCnt--;
+        }
+
+        /* The result in the accumulator is stored in the destination buffer. */
+        *pOut++ = sum;
+
+        /* Compute and store error */
+        d       = (float32_t)(*pRef++);
+        e       = d - sum;
+        *pErr++ = e;
+
+        /* Calculation of Weighting factor for updating filter coefficients */
+        /* epsilon value 0.000000119209289f */
+        w = (e * mu) / (energy + 0.000000119209289f);
+
+        /* Initialize pState pointer */
+        px = pState;
+
+        /* Initialize pCcoeffs pointer */
+        pb = pCoeffs;
+
+        /* Loop over numTaps number of values */
+        tapCnt = numTaps;
+
+        while (tapCnt > 0U) {
+            /* Perform the multiply-accumulate */
+            *pb += w * (*px++);
+            pb++;
+
+            /* Decrement the loop counter */
+            tapCnt--;
+        }
+
+        x0 = *pState;
+
+        /* Advance state pointer by 1 for the next sample */
+        pState = pState + 1;
+
+        /* Decrement the loop counter */
+        blkCnt--;
     }
 
-    /* The result in the accumulator is stored in the destination buffer. */
-    *pOut++ = sum;
+    S->energy = energy;
+    S->x0     = x0;
 
-    /* Compute and store error */
-    d = (float32_t) (*pRef++);
-    e = d - sum;
-    *pErr++ = e;
+    /* Processing is complete. Now copy the last numTaps - 1 samples to the
+       satrt of the state buffer. This prepares the state buffer for the
+       next function call. */
 
-    /* Calculation of Weighting factor for updating filter coefficients */
-    /* epsilon value 0.000000119209289f */
-    w = (e * mu) / (energy + 0.000000119209289f);
+    /* Points to the start of the pState buffer */
+    pStateCurnt = S->pState;
 
-    /* Initialize pState pointer */
-    px = pState;
+    /* Copy (numTaps - 1U) samples  */
+    tapCnt = (numTaps - 1U);
 
-    /* Initialize pCcoeffs pointer */
-    pb = pCoeffs;
+    /* Copy the remaining q31_t data */
+    while (tapCnt > 0U) {
+        *pStateCurnt++ = *pState++;
 
-    /* Loop over numTaps number of values */
-    tapCnt = numTaps;
-
-    while (tapCnt > 0U)
-    {
-      /* Perform the multiply-accumulate */
-      *pb += w * (*px++);
-      pb++;
-
-      /* Decrement the loop counter */
-      tapCnt--;
+        /* Decrement the loop counter */
+        tapCnt--;
     }
-
-    x0 = *pState;
-
-    /* Advance state pointer by 1 for the next sample */
-    pState = pState + 1;
-
-    /* Decrement the loop counter */
-    blkCnt--;
-  }
-
-  S->energy = energy;
-  S->x0 = x0;
-
-  /* Processing is complete. Now copy the last numTaps - 1 samples to the
-     satrt of the state buffer. This prepares the state buffer for the
-     next function call. */
-
-  /* Points to the start of the pState buffer */
-  pStateCurnt = S->pState;
-
-  /* Copy (numTaps - 1U) samples  */
-  tapCnt = (numTaps - 1U);
-
-  /* Copy the remaining q31_t data */
-  while (tapCnt > 0U)
-  {
-    *pStateCurnt++ = *pState++;
-
-    /* Decrement the loop counter */
-    tapCnt--;
-  }
 
 #endif /*   #if defined (ARM_MATH_DSP) */
-
 }
 
 /**
-   * @} end of LMS_NORM group
-   */
+ * @} end of LMS_NORM group
+ */

@@ -55,28 +55,23 @@
  * </pre>
  * \par
  * <code>pState</code> points to the array of state variables.
- * <code>pState</code> is of length <code>numTaps+blockSize-1</code> samples, where <code>blockSize</code> is the number of input samples processed by each call to <code>arm_fir_q31()</code>.
+ * <code>pState</code> is of length <code>numTaps+blockSize-1</code> samples, where <code>blockSize</code> is the number
+ * of input samples processed by each call to <code>arm_fir_q31()</code>.
  */
 
-void arm_fir_init_q31(
-  arm_fir_instance_q31 * S,
-  uint16_t numTaps,
-  q31_t * pCoeffs,
-  q31_t * pState,
-  uint32_t blockSize)
+void arm_fir_init_q31(arm_fir_instance_q31* S, uint16_t numTaps, q31_t* pCoeffs, q31_t* pState, uint32_t blockSize)
 {
-  /* Assign filter taps */
-  S->numTaps = numTaps;
+    /* Assign filter taps */
+    S->numTaps = numTaps;
 
-  /* Assign coefficient pointer */
-  S->pCoeffs = pCoeffs;
+    /* Assign coefficient pointer */
+    S->pCoeffs = pCoeffs;
 
-  /* Clear state buffer and state array size is (blockSize + numTaps - 1) */
-  memset(pState, 0, (blockSize + ((uint32_t) numTaps - 1U)) * sizeof(q31_t));
+    /* Clear state buffer and state array size is (blockSize + numTaps - 1) */
+    memset(pState, 0, (blockSize + ((uint32_t)numTaps - 1U)) * sizeof(q31_t));
 
-  /* Assign state pointer */
-  S->pState = pState;
-
+    /* Assign state pointer */
+    S->pState = pState;
 }
 
 /**

@@ -5,8 +5,8 @@
 /* Includes */
 /*--------------------------------------------------------------------------------*/
 
-#include "arr_desc.h"
 #include "arm_math.h"
+#include "arr_desc.h"
 
 /*--------------------------------------------------------------------------------*/
 /* Macros and Defines */
@@ -20,18 +20,18 @@
 /*--------------------------------------------------------------------------------*/
 
 /* Lengths are multiplied by 2 to accomodate complex numbers*/
-extern float32_t transform_fft_output_fut[TRANSFORM_MAX_FFT_LEN * 2];
-extern float32_t transform_fft_output_ref[TRANSFORM_MAX_FFT_LEN * 2];
-extern float32_t transform_fft_input_fut[TRANSFORM_MAX_FFT_LEN * 2];
-extern float32_t transform_fft_input_ref[TRANSFORM_MAX_FFT_LEN * 2];
-extern float32_t transform_fft_output_f32_fut[TRANSFORM_MAX_FFT_LEN * 2];
-extern float32_t transform_fft_output_f32_ref[TRANSFORM_MAX_FFT_LEN * 2];
-extern float32_t * transform_fft_inplace_input_fut;
-extern float32_t * transform_fft_inplace_input_ref;
-extern float32_t transform_fft_f32_inputs[TRANSFORM_MAX_FFT_LEN * 2];
-extern q31_t transform_fft_q31_inputs[TRANSFORM_MAX_FFT_LEN * 2];
-extern q15_t * transform_fft_q15_inputs;
-extern q15_t dct4_transform_fft_q15_inputs[TRANSFORM_MAX_FFT_LEN * 2];
+extern float32_t  transform_fft_output_fut[TRANSFORM_MAX_FFT_LEN * 2];
+extern float32_t  transform_fft_output_ref[TRANSFORM_MAX_FFT_LEN * 2];
+extern float32_t  transform_fft_input_fut[TRANSFORM_MAX_FFT_LEN * 2];
+extern float32_t  transform_fft_input_ref[TRANSFORM_MAX_FFT_LEN * 2];
+extern float32_t  transform_fft_output_f32_fut[TRANSFORM_MAX_FFT_LEN * 2];
+extern float32_t  transform_fft_output_f32_ref[TRANSFORM_MAX_FFT_LEN * 2];
+extern float32_t* transform_fft_inplace_input_fut;
+extern float32_t* transform_fft_inplace_input_ref;
+extern float32_t  transform_fft_f32_inputs[TRANSFORM_MAX_FFT_LEN * 2];
+extern q31_t      transform_fft_q31_inputs[TRANSFORM_MAX_FFT_LEN * 2];
+extern q15_t*     transform_fft_q15_inputs;
+extern q15_t      dct4_transform_fft_q15_inputs[TRANSFORM_MAX_FFT_LEN * 2];
 
 /* FFT Lengths */
 ARR_DESC_DECLARE(transform_radix2_fftlens);
