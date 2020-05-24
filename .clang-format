@@ -1,0 +1,48 @@
+BasedOnStyle: 'Google'
+Standard: 'Cpp11'
+
+# 行の折り返し設定
+ColumnLimit: 150
+
+# インデント設定
+IndentWidth: 4
+AccessModifierOffset: -4
+ConstructorInitializerIndentWidth: 4
+ContinuationIndentWidth: 4
+IndentCaseLabels: false
+IndentWrappedFunctionNames: false
+
+# include文の並び替え
+SortIncludes: true
+IncludeBlocks: 'Regroup'
+IncludeCategories:
+  - Regex:           '.*'
+    Priority:        1
+  - Regex:           '^<.*>'
+    Priority:        2
+  - Regex:           '^<.*\.h>'
+    Priority:        3
+
+# ワンライナーの許可
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+
+# 括弧
+BreakBeforeBraces: 'Linux'
+BraceWrapping: {AfterExternBlock: false}
+
+# 演算子
+DerivePointerAlignment: true
+PointerAlignment: 'Left'
+
+# 空行設定
+KeepEmptyLinesAtTheStartOfBlocks: true
+MaxEmptyLinesToKeep: 1
+
+# Tab設定
+TabWidth: 4
+UseTab: 'Never'
+
+# Align設定
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true

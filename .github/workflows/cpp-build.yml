@@ -17,3 +17,14 @@ jobs:
       - name: cmake build
         run: |
           ./build.sh
+  format-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check clang-format version
+        run: |
+          clang-format --version
+      - name: checkout branch
+        uses: actions/checkout@master
+      - name: clang-check
+        run: |
+          ./scripts/formatter.sh core drivers
