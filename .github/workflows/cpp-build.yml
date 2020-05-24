@@ -27,4 +27,4 @@ jobs:
         uses: actions/checkout@master
       - name: clang-check
         run: |
-          ./scripts/formatting.sh core drivers
+          ./scripts/formatter.sh core drivers
