@@ -21,7 +21,7 @@ function formatting(){
     tmp_true=$(mktemp /tmp/tmp.clang-formater.XXXXXXXXXX)
     tmp_diff="${tmp_true}.diff"
 
-    if [ ${overwrite} -eq 1 ]; then
+    if [[ ${overwrite} -eq 1 ]]; then
         # only checking
         clang-format -style=file ${filename} ${opt_overwrite} -i
         echo "${filename}: formated by clang-format"
@@ -29,7 +29,7 @@ function formatting(){
         # only checking
         clang-format -style=file ${filename} ${opt_overwrite} > ${tmp_true}
         diff -U 0 ${filename} ${tmp_true} > ${tmp_diff}
-        if [ -z `cat ${tmp_diff}`]; then
+        if [[ -z "$(cat ${tmp_diff})" ]]; then
             echo "${filename}: OK"
         else
             echo "${filename}: clag-format error"
@@ -79,7 +79,7 @@ function main(){
             exit 1;
         fi
     done
-    if [ ${ws_count} -eq 0 ]; then
+    if [[ ${ws_count} -eq 0 ]]; then
         echo "${PROGRAM_NAME}: no file or directory is specfied."
         exit 1
     fi
@@ -92,14 +92,26 @@ function main(){
     find_option=`echo ${find_option} | cut -b 4-`
 
     # get file list
+    filelist=$(mktemp /tmp/tmp.clang-formater.XXXXXXXXXX)
     find_cmd="find ${list_ws_fullpath} ${find_option}"
-    if [ ${flag_exclude} ]; then
+    if [[ ${flag_exclude} ]]; then
         find_cmd="${find_cmd} | grep -v -e \"${value_exclude}\""
     fi
-    filelist=$(bash -c "${find_cmd}")
+    bash -c "${find_cmd}" > ${filelist}
 
     # do clang-format
-    echo ${filelist} | xargs -n 1 -P `getconf _NPROCESSORS_ONLN` -I@ bash -c "formatting @ ${flag_overwrite:-0}"
+    format_error=$(mktemp /tmp/tmp.clang-formater.XXXXXXXXXX)
+    cat ${filelist} | xargs -n 1 -P `getconf _NPROCESSORS_ONLN` -I@ bash -c "formatting @ ${flag_overwrite:-0}" 2> ${format_error}
+
+    # check output
+    if [[ ! -z "$(cat ${format_error})" ]]; then
+        cat ${format_error} >&2
+        echo "format error is found in file"
+        exit 1
+    fi
+
+    # rm temporary file
+    rm ${filelist} ${format_error}
 }
 
 # function define for xargs

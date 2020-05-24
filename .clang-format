@@ -1,43 +1,44 @@
 BasedOnStyle: 'Google'
+Standard: 'Cpp11'
+
+# 行の折り返し設定
+ColumnLimit: 120
+
+# インデント設定
+IndentWidth: 4
 AccessModifierOffset: -4
 ConstructorInitializerIndentWidth: 4
 ContinuationIndentWidth: 4
-IndentWidth: 4
-AlignEscapedNewlinesLeft: true
-AlignConsecutiveAssignments: false
-AlignEscapedNewlinesLeft: true
-AlignTrailingComments: true
-AllowShortBlocksOnASingleLine: true
-AllowShortCaseLabelsOnASingleLine: false
-AllowShortFunctionsOnASingleLine: 'Inline'
+IndentCaseLabels: false
+IndentWrappedFunctionNames: false
+
+# include文の並び替え
+SortIncludes: true
+IncludeBlocks: 'Regroup'
+IncludeCategories:
+  - Regex:           '.*'
+    Priority:        1
+  - Regex:           '^<.*>'
+    Priority:        2
+  - Regex:           '^<.*\.h>'
+    Priority:        3
+
+# ワンライナーの許可
 AllowShortIfStatementsOnASingleLine: false
 AllowShortLoopsOnASingleLine: false
-AlwaysBreakAfterDefinitionReturnType: false
-AlwaysBreakBeforeMultilineStrings: true
-AlwaysBreakTemplateDeclarations: true
-BinPackArguments: true
-BinPackParameters: true
-BreakBeforeBinaryOperators: 'NonAssignment'
-BreakBeforeBraces: 'Allman'
-BreakConstructorInitializersBeforeComma: false
+
+# 括弧
+BreakBeforeBraces: 'Linux'
 BraceWrapping: {AfterExternBlock: false}
-ColumnLimit: 150
-ConstructorInitializerAllOnOneLineOrOnePerLine: true
-Cpp11BracedListStyle: true
-DerivePointerBinding: true
-IndentCaseLabels: true
-IndentWrappedFunctionNames: false
+
+# 演算子
+DerivePointerAlignment: true
+PointerAlignment: 'Left'
+
+# 空行設定
 KeepEmptyLinesAtTheStartOfBlocks: true
 MaxEmptyLinesToKeep: 1
-NamespaceIndentation: 'None'
-PointerAlignment: 'Left'
-SpaceBeforeAssignmentOperators: true
-SpaceBeforeParens: 'ControlStatements'
-SpaceInEmptyParentheses: false
-SpacesBeforeTrailingComments: 1
-SpacesInAngles: false
-SpacesInCStyleCastParentheses: false
-SpacesInParentheses: false
-Standard: 'Cpp11'
+
+# Tab設定
 TabWidth: 4
 UseTab: 'Never'
