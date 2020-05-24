@@ -2,7 +2,7 @@ BasedOnStyle: 'Google'
 Standard: 'Cpp11'
 
 # 行の折り返し設定
-ColumnLimit: 120
+ColumnLimit: 150
 
 # インデント設定
 IndentWidth: 4
@@ -42,3 +42,7 @@ MaxEmptyLinesToKeep: 1
 # Tab設定
 TabWidth: 4
 UseTab: 'Never'
+
+# Align設定
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
