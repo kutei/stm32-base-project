@@ -185,7 +185,7 @@ void arm_cfft_radix4by2_q15(q15_t *pSrc, uint32_t fftLen, const q15_t *pCoef)
     // second col
     arm_radix4_butterfly_q15(pSrc + fftLen, n2, (q15_t *)pCoef, 2U);
 
-    for (i = 0; i<fftLen> > 1; i++) {
+    for (i = 0; i < (fftLen >> 1); i++) {
         p0 = pSrc[4 * i + 0];
         p1 = pSrc[4 * i + 1];
         p2 = pSrc[4 * i + 2];
@@ -280,7 +280,7 @@ void arm_cfft_radix4by2_inverse_q15(q15_t *pSrc, uint32_t fftLen, const q15_t *p
     // second col
     arm_radix4_butterfly_inverse_q15(pSrc + fftLen, n2, (q15_t *)pCoef, 2U);
 
-    for (i = 0; i<fftLen> > 1; i++) {
+    for (i = 0; i < (fftLen >> 1); i++) {
         p0 = pSrc[4 * i + 0];
         p1 = pSrc[4 * i + 1];
         p2 = pSrc[4 * i + 2];
